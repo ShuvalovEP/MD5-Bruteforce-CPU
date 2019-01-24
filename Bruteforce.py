@@ -15,36 +15,39 @@ import datetime
 ascii_ranges = []
 
 
-for i in range(33,126):
+for i in range(33, 126):
     ascii_ranges.append(chr(i))
 
 
 def bruteforce(input_md5):
     pass_try = 0
-    for iteration in range(1, 63+1): # Длинна пароля
+    for iteration in range(1, 63 + 1):  # Длинна пароля
         start = datetime.datetime.now()
         print(iteration)
         for item in product(ascii_ranges, repeat=iteration):
             item_string = ''.join(item)
             pass_try += 1
-            if md5(item_string.encode('utf-8')).hexdigest() == input_md5: 
+            if md5(item_string.encode('utf-8')).hexdigest() == input_md5:
                 delta = datetime.datetime.now() - start
-                spead = pass_try//delta.seconds
+                try:
+                    spead = pass_try // delta.seconds
+                except ZeroDivisionError:
+                    spead = pass_try
                 print(
-                      '\n    - Password:', item_string,
-                      '\n    - Length:', iteration,'symbol',
-                      '\n    - Time:', delta.seconds,'sec', 
-                      '\n    - Spead:', spead,'pass/sec'
-                      '\n    - Generated:', pass_try,'pass'
-                      '\n    - Hash MD5:', input_md5
-                     )
+                    '\n    - Password:', item_string,
+                    '\n    - Length:', iteration, 'symbol',
+                    '\n    - Time:', delta.seconds, 'sec',
+                    '\n    - Spead:', spead, 'pass/sec'
+                    '\n    - Generated:', pass_try, 'pass'
+                    '\n    - Hash MD5:', input_md5
+                )
                 exit()
 
 
 def main():
     input_md5 = input('Enter hash to crack: ')
     return bruteforce(input_md5)
-        
+
 
 if __name__ == '__main__':
     main()
